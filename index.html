@@ -5,6 +5,7 @@
 <script src="http://fb.me/react-0.11.1.js"></script>
 <script src="http://fb.me/JSXTransformer-0.11.1.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 
 <title>collapsible section</title>  
 </head>  
@@ -17,8 +18,7 @@ var CollapsibleSection = React.createClass({
   render: function() {
     return (
       <div className="CollapsibleSection">
-        <h1>This is the title</h1>
-        <CollapsibleSectionBody />
+        {this.props.title}
       </div>
       )
   }
@@ -35,7 +35,7 @@ var CollapsibleSectionBody = React.createClass({
   }
 })
 React.renderComponent(
-  <CollapsibleSection />,
+  <CollapsibleSection title="This is the title"/>,
   document.getElementById('content')
   )
 </script>
