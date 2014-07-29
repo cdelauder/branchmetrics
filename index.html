@@ -14,17 +14,15 @@
   <div id='content'></div>
 <script type="text/jsx">
 /** @jsx React.DOM */
-var converter = new Showdown.converter();
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 
 var CollapsibleSection = React.createClass({
   render: function() {
-    var subsectionContent = converter.makeHtml(this.props.children.toString())
     return (
       <div className="CollapsibleSection">
         <h1 onClick={this.handleClick}>{this.props.title}</h1>
-        <CollapsibleSectionBody body={subsectionContent}/>
+        <CollapsibleSectionBody body={this.props.children}/>
       </div>
       )
   }, 
@@ -38,20 +36,24 @@ var CollapsibleSection = React.createClass({
 })
 var CollapsibleSectionBody = React.createClass({
   render: function() {
+    subsectionContent = this.transferPropsTo(<p>{this.props.body}</p>)
     return(
       <div className="Subsection" >
-        <span dangerouslySetInnerHTML={{__html: this.props.body}} />
+        <ReactCSSTransitionGroup transitionName="slide">
+        {subsectionContent}
+        </ReactCSSTransitionGroup>
       </div>
       )
   }
 })
 React.renderComponent(
   <CollapsibleSection title="This is the title">
-    <strong>This</strong> is the <em>body</em>.
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent volutpat varius est, sed rhoncus felis vehicula non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce sit amet arcu malesuada, dapibus mi ac, commodo arcu. Donec at semper nibh. Duis pulvinar sagittis sollicitudin. Morbi mollis nisl tincidunt ligula tincidunt mollis. Nam interdum ligula nec libero ullamcorper, ut sodales lorem lacinia. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec lectus neque, porttitor sed fermentum vitae, tincidunt sed ante. Vestibulum urna sapien, sollicitudin id dolor nec, sagittis venenatis lacus.
+<strong>This</strong> is the <em>body</em>.
 
-  </CollapsibleSection>,
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent volutpat varius est, sed rhoncus felis vehicula non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce sit amet arcu malesuada, dapibus mi ac, commodo arcu. Donec at semper nibh. Duis pulvinar sagittis sollicitudin. Morbi mollis nisl tincidunt ligula tincidunt mollis. Nam interdum ligula nec libero ullamcorper, ut sodales lorem lacinia. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec lectus neque, porttitor sed fermentum vitae, tincidunt sed ante. Vestibulum urna sapien, sollicitudin id dolor nec, sagittis venenatis lacus.
+
+</CollapsibleSection>,
   document.getElementById('content')
   )
 </script>
