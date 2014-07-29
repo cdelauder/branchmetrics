@@ -2,10 +2,11 @@
 <html lang="en">  
 <head>
 <meta charset="utf-8" /> 
-<script src="http://fb.me/react-0.11.1.js"></script>
+<script src="http://fb.me/react-with-addons-0.11.1.js"></script>
 <script src="http://fb.me/JSXTransformer-0.11.1.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
 
 <title>collapsible section</title>  
 </head>  
@@ -13,39 +14,47 @@
   <div id='content'></div>
 <script type="text/jsx">
 /** @jsx React.DOM */
+var converter = new Showdown.converter();
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 
 var CollapsibleSection = React.createClass({
   render: function() {
+    var subsectionContent = converter.makeHtml(this.props.children.toString())
     return (
       <div className="CollapsibleSection">
-        {this.props.title}
+        <h1 onClick={this.handleClick}>{this.props.title}</h1>
+        <CollapsibleSectionBody body={subsectionContent}/>
       </div>
       )
-  }
+  }, 
+  handleClick: function(event) {
+    if (event.target.nextSibling.style.display === '') {
+      event.target.nextSibling.style.display = 'none'
+    } else {
+      event.target.nextSibling.style.display = ''
+    }
+  },
 })
 var CollapsibleSectionBody = React.createClass({
   render: function() {
     return(
-      <div className="Subsection">
-      <strong>This</strong> is the <em>body</em>.
-      <br/>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent volutpat varius est, sed rhoncus felis vehicula non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce sit amet arcu malesuada, dapibus mi ac, commodo arcu. Donec at semper nibh. Duis pulvinar sagittis sollicitudin. Morbi mollis nisl tincidunt ligula tincidunt mollis. Nam interdum ligula nec libero ullamcorper, ut sodales lorem lacinia. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec lectus neque, porttitor sed fermentum vitae, tincidunt sed ante. Vestibulum urna sapien, sollicitudin id dolor nec, sagittis venenatis lacus.
+      <div className="Subsection" >
+        <span dangerouslySetInnerHTML={{__html: this.props.body}} />
       </div>
       )
   }
 })
 React.renderComponent(
-  <CollapsibleSection title="This is the title"/>,
+  <CollapsibleSection title="This is the title">
+    <strong>This</strong> is the <em>body</em>.
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent volutpat varius est, sed rhoncus felis vehicula non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce sit amet arcu malesuada, dapibus mi ac, commodo arcu. Donec at semper nibh. Duis pulvinar sagittis sollicitudin. Morbi mollis nisl tincidunt ligula tincidunt mollis. Nam interdum ligula nec libero ullamcorper, ut sodales lorem lacinia. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec lectus neque, porttitor sed fermentum vitae, tincidunt sed ante. Vestibulum urna sapien, sollicitudin id dolor nec, sagittis venenatis lacus.
+
+  </CollapsibleSection>,
   document.getElementById('content')
   )
 </script>
 
-<!-- <CollapsibleSection title="This is the title">
-
-<strong>This</strong> is the <em>body</em>.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent volutpat varius est, sed rhoncus felis vehicula non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce sit amet arcu malesuada, dapibus mi ac, commodo arcu. Donec at semper nibh. Duis pulvinar sagittis sollicitudin. Morbi mollis nisl tincidunt ligula tincidunt mollis. Nam interdum ligula nec libero ullamcorper, ut sodales lorem lacinia. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec lectus neque, porttitor sed fermentum vitae, tincidunt sed ante. Vestibulum urna sapien, sollicitudin id dolor nec, sagittis venenatis lacus.
-
-</CollapsibleSection> -->
 </body>
 </html>
